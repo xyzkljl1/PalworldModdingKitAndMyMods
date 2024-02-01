@@ -1,21 +1,12 @@
---local UEHelpers = require("UEHelpers")
---PlayerController=UEHelpers.GetPlayerController()
---PalPlayerState=PlayerController:GetPalPlayerState()
---Player = PlayerController.Pawn
---PalNetworkPlayerComponent=FindFirstOf("PalNetworkPlayerComponent")
---PalUtility = FindFirstOf("PalNetworkTransmitter"):GetPlayer()
-mySpecialContainer=nil
-mySpecialNumber=237
+local mySpecialContainer=nil
+local mySpecialNumber=237
 
---RegisterKeyBind(Key.F2,function()
-    --MergeEmptyChestToSpecial()
-    --MapObjectConcreteModelMapForServer
-    --manager=FindFirstOf("PalMapObjectManager")
-    --map=manager["MapObjectConcreteModelMapForServer"]
-    --print(tostring(map:Keys()))
---end)
+local ModelName="PalMapObjectItemChestModel"
+local ResultIndex=1
 local hooked=false
 local inited=false
+local manager=nil
+if true then
 RegisterHook("/Script/Engine.PlayerController:ClientRestart", function(Context)
     if not hooked then
         hooked=true
@@ -40,8 +31,9 @@ RegisterHook("/Script/Engine.PlayerController:ClientRestart", function(Context)
                 --初始化
                 mySpecialContainer=InitSpecialContainer(mySpecialNumber,true)
                 if CheckInit() then
+                    mySpecialContainer["CorruptionMultiplier"]=0.01
                     --种种原因(如箱子被攻击破坏导致Container销毁)使得一些箱子的Container为空，在启动时自动修复
-                    RecoverSpecialContainerToAllChest()
+                    RecoverSpecialContainerToAllChests()
                     --自动合并空箱
                     MergeEmptyChestToSpecial()
                 end
@@ -57,17 +49,20 @@ RegisterHook("/Script/Pal.PalBuildProcess:OnFinishWorkInServer",function(self,Wo
     --这种情况可能是之前箱子被攻击破坏造成的，此时可能会有Container为空的箱子，尝试修复
     if not CheckInit() then
          mySpecialContainer=InitSpecialContainer(mySpecialNumber,false)
-         RecoverSpecialContainerToAllChest()
+         if CheckInit() then
+             mySpecialContainer["CorruptionMultiplier"]=0.01
+             RecoverSpecialContainerToAllChests()
+         end
     end
     MergeEmptyChestToSpecial()   
 end)
 
 --拆除模式时把容器的Container设为空以避免销毁容器
 RegisterHook("/Script/Pal.PalUIDismantlingModel:Setup",function()
-    RemoveSpecialContainerFromAllChest()
+    RemoveSpecialContainerFromAllChests()
 end)
 RegisterHook("/Script/Pal.PalUIDismantlingModel:FinishDismantling",function()
-    RecoverSpecialContainerToAllChest()
+    RecoverSpecialContainerToAllChests()
 end)
 
 function MergeEmptyChestToSpecial()
@@ -76,10 +71,11 @@ function MergeEmptyChestToSpecial()
         manager=FindFirstOf("PalMapObjectManager")
         --print(tostring(manager:GetFullName()))
         if manager~=nil and manager:IsValid() then
-            MyMod:MergeEmptyChestToSpecial(manager,mySpecialNumber,mySpecialContainer)
+            MyMod:MergeEmptyChestToSpecial(manager,mySpecialNumber,mySpecialContainer,ModelName)
         end
+        --[[
         if false then
-            chestmodel=FindAllOf("PalMapObjectItemChestModel")
+            chestmodel=FindAllOf(ModelName)
             print(string.format("[ShareChest]Searching Chest %d",#chestmodel))
             for i=1,#chestmodel do
                 if chestmodel[i]:GetItemContainerModule():IsValid() then
@@ -90,7 +86,8 @@ function MergeEmptyChestToSpecial()
                     end
                 end
             end
-        end
+        end 
+        ]]---
     end
 end
 
@@ -101,9 +98,16 @@ function CheckInit()
     return true
 end
 
-function RemoveSpecialContainerFromAllChest()
+function RemoveSpecialContainerFromAllChests()
     if CheckInit() then   
-        chestmodel=FindAllOf("PalMapObjectItemChestModel")
+        --use bp mod,faster 
+        manager=FindFirstOf("PalMapObjectManager")
+        --print(tostring(manager:GetFullName()))
+        if manager~=nil and manager:IsValid() then
+            MyMod:RemoveSpecialContainerFromAllChests(manager,mySpecialContainer,ModelName)
+        end
+        --[[
+        chestmodel=FindAllOf(ModelName)
         if chestmodel~=nil then
             print(string.format("[ShareChest]Searching Chest %d",#chestmodel))
             for i=1,#chestmodel do
@@ -116,11 +120,19 @@ function RemoveSpecialContainerFromAllChest()
                 end
             end
         end
+        ]]--
     end
 end
-function RecoverSpecialContainerToAllChest()
-    if CheckInit() then   
-        chestmodel=FindAllOf("PalMapObjectItemChestModel")
+function RecoverSpecialContainerToAllChests()
+    if CheckInit() then
+        --use bp mod,faster 
+        manager=FindFirstOf("PalMapObjectManager")
+        --print(tostring(manager:GetFullName()))
+        if manager~=nil and manager:IsValid() then
+            MyMod:RecoverSpecialContainerToAllChests(manager,mySpecialContainer,ModelName)
+        end
+        --[[
+        chestmodel=FindAllOf(ModelName)
         if chestmodel~=nil then
             print(string.format("[ShareChest]Searching Chest %d",#chestmodel))
             for i=1,#chestmodel do
@@ -132,38 +144,26 @@ function RecoverSpecialContainerToAllChest()
                     end
                 end
             end
-        end
+        end]]--
     end
 end
 
 function InitSpecialContainer(ct,searchContainers)
-    local chestmodel=FindAllOf("PalMapObjectItemChestModel")
+    local chestmodel=FindAllOf(ModelName)
     --可以尝试从箱子中找，但是没必要，因为blueprint中遍历Container很快
-    if false then
-        if chestmodel~=nil then
-            print(string.format("[ShareChest]Searching Chest %d",#chestmodel))
-            for i=1,#chestmodel do
-                if chestmodel[i]:GetItemContainerModule():IsValid() then
-                    local container=chestmodel[i]:GetItemContainerModule():GetContainer()
-                    if container ~=nil and container:IsValid() and container:Num()==mySpecialNumber then
-                        return container
-                    end
-                end
-            end
-        end
-    end
     --遍历容器查找特定格子数的Container
     local manager=FindFirstOf("PalItemContainerManager")
     if searchContainers and manager~=nil and manager:IsValid() then
         --调用BPmod查找，非常快
-        MyMod:FindContainerBySlotNum(manager,mySpecialNumber)
+        MyMod:FindContainerBySlotNum(manager,mySpecialNumber,ModelName)
         local x={}
         local y={}
-        MyMod:GetResultContainer(x)--返回值
-        MyMod:GetResultBool(y)--是否成功
+        MyMod:GetResultContainer(ResultIndex,x)--返回值
+        MyMod:GetResultBool(ResultIndex,y)--是否成功
         if y.Result and x.Result~=nil and x.Result:IsValid() then
             print("[One Chest]Find Special Container:")
             print(tostring(x.Result:GetFullName()))
+            print(tostring(x.Result:Num()))
             return x.Result
         end
     end
@@ -196,4 +196,5 @@ function InitSpecialContainer(ct,searchContainers)
         end
     end
     print("[ShareChest]Can't get Special Container")
+end
 end
