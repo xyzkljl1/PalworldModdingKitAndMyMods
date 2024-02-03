@@ -1,5 +1,5 @@
 只在单机游戏中有效！/Only for offline Game!
-Mod version 1.0, for Game version v0.1.4.0
+Mod version 1.2, for Game version v0.1.4.0
 All Chest is expanded to 199 slots/提升所有箱子容量至199
 
 
@@ -11,14 +11,17 @@ This Mod changes your save file Permanently!
 2.每次进入游戏及建造完成时，扩容所有既存且容量不足199的箱子至199格
 When you start the game or finish building something,all chests are expanded to 199 slots
 
-3.不能用于联机游戏
+3.卸载该MOD不会影响已经扩容的箱子
+Uninstall this mod won't affect existing bigger chests.
+
+4.不能用于联机游戏
 Don't use this in online games
 
-4.如果你需要更大的箱子，打开Scripts/main.lua将199手动修改为更大的数字
+5.如果你需要更大的箱子，打开Scripts/main.lua将199手动修改为更大的数字
 If you need even bigger chest,Edit Scripts/main.lua and modify 199 to whatever you want
 
-5.和ShareChest冲突
-Conflict wit ShareChest mod.
+6.和ShareChest冲突
+Conflict with SharedChest mod.
 
 
 使用方法/Install:
@@ -37,21 +40,22 @@ Notice! This mod contains TWO parts which need to be placed in different dir.
    - UE4SS-settings.ini
    - ...
 
-2.将该MOD解压至UE4SS所处的Mods目录 / Extract this mod to 'Mods' dir
-目录结构如下所示 / Dir struct should be like: 
+2.将BiggerChest.7z解压至UE4SS所处的Mods目录,完成后目录结构应当如下所示:
+Extract `BiggerChest.7z` to 'Mods' dir,It should be like:
+
 - Palworld\Pal\Binaries\Win64\Mods
    - BiggerChest
 	- Scripts
 	   - main.lua
 	- enable.txt
 	- Readme.txt
-	- BiggerChest.pak
 
-3.修改文件Palworld\Pal\Binaries\Win64\Mods\mods.txt  / Edit File: Palworld\Pal\Binaries\Win64\Mods\mods.txt
-确保其中包含如下内容 / Make Sure following code is in the file
+3.修改文件Palworld\Pal\Binaries\Win64\Mods\mods.txt确保其中包含如下 *两行* 内容 
+Edit File `Palworld\Pal\Binaries\Win64\Mods\mods.txt` to make sure the following TWO line(NOT ONE) is in the file:
+
 BiggerChest:1
 BPModLoaderMod : 1
 
-4.将BiggerChest.pak拷贝至Palworld\Pal\Content\Paks\LogicMods
-Copy BiggerChest.pak to Palworld\Pal\Content\Paks\LogicMods
+4.解压BiggerChestPak.7z,将其中的BiggerChest.pak文件（注意不是整个文件夹）拷贝至Palworld\Pal\Content\Paks\LogicMods
+Extract BiggerChestPak.7z,copy ONLY `BiggerChest.pak` to Palworld\Pal\Content\Paks\LogicMods
 

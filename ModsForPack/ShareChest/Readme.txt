@@ -1,5 +1,5 @@
 只在单机游戏中有效！/Only work in offline Game!
-Mod version 1.3, for Game version v0.1.4.0
+Mod version 1.5, for Game version v0.1.4.0
 所有空的/新建的箱子变为共享箱、共享同一存储空间(237格)，共享空间可用于据点内建造和生产/All empty chests and new chests share one storage space.（Means `If each camp has a shared chest, resources are naturally shared between camps.`)
 
 
@@ -37,11 +37,17 @@ Don't be panic.Return to title,start the game again and build a new chest,then a
 In rare cases,when a chest is dismantled ,it will act like destroyed.You can use the above method to recover.
 
 7.共享箱中的食物腐败速度降低(严格来讲是腐败更快但是腐败条也变长，总体而言更难腐败了)
-Food in shared box can hardly corrupt.
+Food in shared chest can hardly corrupt.
+(Every shared chest speed up the corruption,but the total corrupt time is 1000 times longer.)
 
-8.默认不影响食物箱和配种农场; 影响冰箱
-Feed box and breeding farm won't be shared.(May or may not support feed box in further version)
+8.默认不影响饲料箱和配种农场; 影响冰箱
+In default condition,Feed box and breeding farm won't be shared.
 Cooler box Can be shared.
+
+8.5.如果希望共享饲料箱，下载后用笔记本编辑ShareChest\Scripts\main.lua，把第一行"local bShareFoodBox = false"改成"local bShareFoodBox = true"
+饲料箱和道具箱不共通
+If you want the feed box be shared, edit `ShareChest\Scripts\main.lua` and modify the first line `local bShareFoodBox = false` to  `local bShareFoodBox = true` 
+Feed boxes won't be shared with chests.
 
 9.不能用于联机游戏
 Don't use this in online games.
@@ -49,12 +55,13 @@ Don't use this in online games.
 10.点击控制台的"Restart All Mod"之后需要小退才能生效
 Need to return to title if you press "Restart All Mod" in console
 
-11.Vortex用户可能需要手动安装
-Vortex users may or may not need to install it manually
+11.卸载该mod后，箱子的容量和共享状态不变，但是之后拆除任意共享箱会导致所有共享箱失效并且内容物立刻掉落，如同第六条中提到的情况，可以再次安装该mod并使用第六条中的方法修复
+If you uninstall this mod,chests won't lost slots or shared status.
+But when a shared chest is dismantled after uninstalling the mod,the content will drop and all shared chest will be broken.
+Just like the situation mentioned in Note.6.It can be recovered by the method in Note.6
 
 12.和Bigger Chest冲突
 Conflict with Bigger Chest
-
 
 
 使用方法/Install:
@@ -62,7 +69,7 @@ Conflict with Bigger Chest
 0.注意该MOD分两部分！需要放到不同目录下！
 Notice! This mod contains TWO parts which need to be placed in different dir.
 
-1.安装UE4SS/Install UE4SS
+1.安装UE4SS / Install UE4SS
 下载/Download: https://github.com/UE4SS-RE/RE-UE4SS/releases/download/v2.5.2/UE4SS_Xinput_v2.5.2.zip
 解压上述文件至 / Extract the zip to: Palworld\Pal\Binaries\Win64\
 目录结构如下所示 / Dir struct should be like:
@@ -73,20 +80,25 @@ Notice! This mod contains TWO parts which need to be placed in different dir.
    - UE4SS-settings.ini
    - ...
 
-2.将该MOD解压至UE4SS所处的Mods目录 / Extract this mod to 'Mods' dir
-目录结构如下所示 / Dir struct should be like: 
+2.将ShareChest.7z解压至UE4SS所处的Mods目录,目录结构如下所示
+Extract `ShareChest.7z` to UE4SS 'Mods' dir.Should be like: 
+
 - Palworld\Pal\Binaries\Win64\Mods
    - ShareChest
 	- Scripts
 	   - main.lua
 	- enable.txt
 	- Readme.txt
-	- ShareChest.pak
 
-3.修改文件Palworld\Pal\Binaries\Win64\Mods\mods.txt  / Edit File: Palworld\Pal\Binaries\Win64\Mods\mods.txt
-确保其中包含如下内容 / Make Sure following code is in the file
+3.修改文件Palworld\Pal\Binaries\Win64\Mods\mods.txt,确保其中包含如下内容
+Edit File `Palworld\Pal\Binaries\Win64\Mods\mods.txt` to make sure following TWO LINES(NOT ONE) are in the file
+
 BPModLoaderMod : 1
 ShareChest: 1
 
-4.将ShareChest.pak拷贝至Palworld\Pal\Content\Paks\LogicMods
-Copy ShareChest.pak to Palworld\Pal\Content\Paks\LogicMods
+4.下载ShareChest_Pak文件,解压后将ShareChest.pak文件拷贝至Palworld\Pal\Content\Paks\LogicMods
+Download `ShareChest_Pak.7z`.Extract and copy `ShareChest.pak` to Palworld\Pal\Content\Paks\LogicMods
+
+5.可选 / Optional
+如果希望饲料箱共享，参考注意事项8.5操作
+If you want feed boxes are also shared ,see Note 8.5
