@@ -1,5 +1,5 @@
 只在单机游戏中有效！/Only work in offline Game!
-Mod version 1.1, for Game version v0.1.4.0
+Mod version 1.2, for Game version v0.1.4.0
 道具制作完成后自动进入背包/transport crafted items to your bag automatically
 
 注意/Note：
@@ -12,7 +12,12 @@ Mod version 1.1, for Game version v0.1.4.0
 7.联机游戏中不会生效/No effect in online games
 8.该Mod可能会导致你超重/Transported items may cause overweight
 
+9.如果希望不自动获取金属块/蛋糕，打开Scripts\main.lua编辑，找到IgnoreMetal(忽略金属块)/IgnoreCake(忽略蛋糕),将后面的false改为true
+If you want to ignore copper/iron ingot or cake,edit `Scripts\main.lua`.
+Find `IgnoreMetal` or `IgnoreCake` and modify the following `false` to `true`
+
 使用方法/Install:
+
 1.安装UE4SS/Install UE4SS
 下载/Download: https://github.com/UE4SS-RE/RE-UE4SS/releases/download/v2.5.2/UE4SS_Xinput_v2.5.2.zip
 解压上述文件至/Extract the zip to: Palworld\Pal\Binaries\Win64\

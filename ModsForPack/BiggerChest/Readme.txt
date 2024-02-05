@@ -1,5 +1,5 @@
 只在单机游戏中有效！/Only for offline Game!
-Mod version 1.2, for Game version v0.1.4.0
+Mod version 1.3, for Game version v0.1.4.0
 All Chest is expanded to 199 slots/提升所有箱子容量至199
 
 

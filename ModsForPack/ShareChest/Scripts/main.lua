@@ -1,7 +1,9 @@
 local bShareFoodBox = false
+local OnlyMergeCertainChest=0
 
+local OnlyMergeCertainChestFood=0
 local mySpecialContainer=nil
-local mySpecialNumber=237
+local mySpecialNumber=239
 
 local mySpecialContainerFood=nil
 local mySpecialNumberFood=97
@@ -13,16 +15,22 @@ local ModelNameFood="PalMapObjectPalFoodBoxModel"
 --Pre/PostBeginPlay因为BPModLoader的bug会重复触发，因此在bpmod加入原生的BeginPlay事件，并hook其ReceiveBeginPlay函数
 --ReceiveBeginPlay会在启动游戏、进入退出一场游戏时触发，获取GameMode总是获取到1因此不能用于判断？
 --结束游戏时触发的这次没有影响，会搜索所有container获得空，然后因为containerModule不valid什么都不做
---第一次ClientRestart肯定是进游戏，此时hook ReceiveBeginPlay, 之后用ReceiveBeginPlay触发初始化；第一次进游戏时该hook也能触发
+--第一次ClientRestart肯定是进游戏(或者刚启动游戏)，此时hook ReceiveBeginPlay, 之后用ReceiveBeginPlay触发初始化；第一次进游戏时该hook也能触发
 --Hook对于Bp-only函数(即使不以/Script开头的函数)是posthook，对bp-only函数(/Script开头的)是prehook,因此ReceiveBeginPlay的hook会在各种创建完毕时执行
 --BP-only函数如果被hook多次，只有最先执行的会生效,非bp则会正常生效(也是bug?)
 local hooked=false
 RegisterHook("/Script/Engine.PlayerController:ClientRestart", function(Context)
     if not hooked then
-        hooked=true
         RegisterHook("/Game/Mods/ShareChest/ModActor.ModActor_C:ReceiveBeginPlay",function()
-            Init()
+            ExecuteWithDelay(5000,function()
+                ExecuteInGameThread(function()
+                    Init()
+                end)
+            end)
         end)
+        --在某些用户的机器上，ClientRestart会在启动游戏时就触发一次，而此时ReceiveBeginPlay的hook会失败，原因不明
+        --因此需要把hooked=true放在后面，这样如果RegisterHooke失败了hooked就不会被赋值
+        hooked=true
     end
 end)
 
@@ -66,13 +74,13 @@ function MergeEmptyChestToSpecial()
     if CheckInit() then 
         local manager=FindFirstOf("PalMapObjectManager")
         if manager~=nil and manager:IsValid() then
-            MyMod:MergeEmptyChestToSpecial(manager,mySpecialNumber,mySpecialContainer,ModelName)
+            MyMod:MergeEmptyChestToSpecial(manager,mySpecialNumber,mySpecialContainer,ModelName,OnlyMergeCertainChest)
         end
     end
     if CheckInitFood() then
         local manager=FindFirstOf("PalMapObjectManager")
         if manager~=nil and manager:IsValid() then
-            MyMod:MergeEmptyChestToSpecial(manager,mySpecialNumberFood,mySpecialContainerFood,ModelNameFood)
+            MyMod:MergeEmptyChestToSpecial(manager,mySpecialNumberFood,mySpecialContainerFood,ModelNameFood,OnlyMergeCertainChestFood)
         end
     end
     --[[
@@ -200,11 +208,11 @@ function InitSpecialContainer(searchContainers)
     --找不到说明尚未初始化过/之前的SpecialContainer因为箱子被攻击销毁了
     --选出新的SpecialContainer
     if mySpecialContainer == nil then
-        mySpecialContainer=StaticElectSpecialContainer(ModelName,mySpecialNumber)
+        mySpecialContainer=StaticElectSpecialContainer(ModelName,mySpecialNumber,OnlyMergeCertainChest)
     end
     if bShareFoodBox and mySpecialContainerFood == nil then
         --找不到说明尚未初始化过/之前的SpecialContainer因为箱子被攻击销毁了
-        mySpecialContainerFood=StaticElectSpecialContainer(ModelNameFood,mySpecialNumberFood)
+        mySpecialContainerFood=StaticElectSpecialContainer(ModelNameFood,mySpecialNumberFood,OnlyMergeCertainChestFood)
     end
     -- 延长腐败时间，因为每个连接到容器的箱子都会使得食物加快腐败速度
     if not CheckInit() then
@@ -219,7 +227,7 @@ function InitSpecialContainer(searchContainers)
     end
 end
 
-function StaticElectSpecialContainer(ModelName,SpecialNumber)
+function StaticElectSpecialContainer(ModelName,SpecialNumber,MergeNumber)
     local chestmodel=FindAllOf(ModelName)
     --从箱子里任选一个升格为SpecialContainer，优先找空的
     if chestmodel~=nil then
@@ -231,10 +239,12 @@ function StaticElectSpecialContainer(ModelName,SpecialNumber)
             if chestmodel[i]:GetItemContainerModule():IsValid() then
                 local container=chestmodel[i]:GetItemContainerModule():GetContainer()
                 if container ~=nil and container:IsValid() and container:IsEmpty() and container:Num()<SpecialNumber then
-                    print(string.format("[ShareChest]No Special Container,Elect from a Chest"))
-                    --扩容
-                    MyMod:AddSlotToContainer(container,SpecialNumber)
-                    return container
+                    if MergeNumber ==0 or container:Num()==MergeNumber then
+                        print(string.format("[ShareChest]No Special Container,Elect from a Chest"))
+                        --扩容
+                        MyMod:AddSlotToContainer(container,SpecialNumber)
+                        return container
+                    end
                 end
             end
         end
@@ -243,10 +253,12 @@ function StaticElectSpecialContainer(ModelName,SpecialNumber)
             if chestmodel[i]:GetItemContainerModule():IsValid() then
                 local container=chestmodel[i]:GetItemContainerModule():GetContainer()
                 if container ~=nil and container:IsValid() and not container:IsEmpty() and container:Num()<SpecialNumber then
-                    print(string.format("[ShareChest]No Special Container,Elect from a Chest"))
-                    --扩容
-                    MyMod:AddSlotToContainer(container,SpecialNumber)
-                    return container
+                    if MergeNumber ==0 or container:Num()==MergeNumber then
+                        print(string.format("[ShareChest]No Special Container,Elect from a Chest"))
+                        --扩容
+                        MyMod:AddSlotToContainer(container,SpecialNumber)
+                        return container
+                    end
                 end
             end
         end

@@ -1,5 +1,5 @@
 只在单机游戏中有效！/Only work in offline Game!
-Mod version 1.5, for Game version v0.1.4.0
+Mod version 1.7, for Game version v0.1.4.0
 所有空的/新建的箱子变为共享箱、共享同一存储空间(237格)，共享空间可用于据点内建造和生产/All empty chests and new chests share one storage space.（Means `If each camp has a shared chest, resources are naturally shared between camps.`)
 
 
@@ -16,6 +16,12 @@ Therefore,chests built after installing this mod will definitely become shared c
 3.首次使用该Mod时，既存箱子中的一个会变为共享箱子，该箱子的原内容物自动进入共享空间，该空间固定具有237个格子
 First time you use this mod,one exist chest will become shared chest.Existing content won't disappear.
 All shared chests share the same 237 slots.
+
+3.5.如果希望只有部分箱子共享，打开main.lua找到第二行"OnlyMergeCertainChest=0"，将0改为任意数字，例如改成24时，则只有原本为24格的箱子(即金属箱)会被共享;这不会影响饲料箱
+If want only certain chests to be shared.Edit `main.lua` and find `OnlyMergeCertainChest=0` in the second line.Change `0` to a proper number so that only chests with that slot-number will be shared.
+For example,if `OnlyMergeCertainChest=10` then only 10-slot chests(wooden box,etc) will be shared.
+This won't affect feed box.
+
 
 4.只要据点范围内有共享箱，该据点就可以使用共享空间中的资源建造/生产
 但是在这次开始游戏之前就已经是共享箱的箱子才有这个效果
@@ -73,6 +79,8 @@ Notice! This mod contains TWO parts which need to be placed in different dir.
 下载/Download: https://github.com/UE4SS-RE/RE-UE4SS/releases/download/v2.5.2/UE4SS_Xinput_v2.5.2.zip
 解压上述文件至 / Extract the zip to: Palworld\Pal\Binaries\Win64\
 目录结构如下所示 / Dir struct should be like:
+务必安装2.5.2或以上版本UE4SS / Need UE4SS Version >= 2.5.2!!
+
 -Palworld\Pal\Binaries\Win64
    - Mods
       - mods.txt

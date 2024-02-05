@@ -2,12 +2,12 @@ targetSlots=199
 local hooked=false
 RegisterHook("/Script/Engine.PlayerController:ClientRestart", function(Context)
     if not hooked then
-        hooked=true
         RegisterHook("/Game/Mods/BiggerChest/ModActor.ModActor_C:ReceiveBeginPlay",function()
             MyMod=StaticFindObject("/Game/Mods/BiggerChest/ModActor.Default__ModActor_C")
             manager=FindFirstOf("PalMapObjectManager")
             DoIt()
         end)
+        hooked=true
     end
 end)
 
