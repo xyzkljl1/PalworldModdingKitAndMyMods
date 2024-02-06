@@ -1,5 +1,5 @@
 只在单机游戏中有效！/Only work in offline Game!
-Mod version 1.7, for Game version v0.1.4.0
+Mod version 1.9, for Game version v0.1.4.0
 所有空的/新建的箱子变为共享箱、共享同一存储空间(237格)，共享空间可用于据点内建造和生产/All empty chests and new chests share one storage space.（Means `If each camp has a shared chest, resources are naturally shared between camps.`)
 
 
@@ -17,11 +17,11 @@ Therefore,chests built after installing this mod will definitely become shared c
 First time you use this mod,one exist chest will become shared chest.Existing content won't disappear.
 All shared chests share the same 237 slots.
 
+
 3.5.如果希望只有部分箱子共享，打开main.lua找到第二行"OnlyMergeCertainChest=0"，将0改为任意数字，例如改成24时，则只有原本为24格的箱子(即金属箱)会被共享;这不会影响饲料箱
 If want only certain chests to be shared.Edit `main.lua` and find `OnlyMergeCertainChest=0` in the second line.Change `0` to a proper number so that only chests with that slot-number will be shared.
 For example,if `OnlyMergeCertainChest=10` then only 10-slot chests(wooden box,etc) will be shared.
 This won't affect feed box.
-
 
 4.只要据点范围内有共享箱，该据点就可以使用共享空间中的资源建造/生产
 但是在这次开始游戏之前就已经是共享箱的箱子才有这个效果
@@ -34,17 +34,36 @@ In another word,when a non-shared chest is turned into a shared chest,it is temp
 When any shared chest is dismantled ,the content WON'T drop.
 When all shared chests are dismantled,the content WON'T drop or disappear.You can access them as long as you build another chest.
 
+
+5.5如果你因为某种原因(例如因为旧版本mod的bug)，发现出现了两组共享箱子，依照如下步骤修复
+If you found you have two groups of shared chest for some reason(such as you used a old version with known bug).
+You can fix it by the following step:
+
+a)找到正确的共享箱子组：新建一个箱子，这个箱子一定属于正确的共享组，找到和它不共享的箱子
+Find the "right" group chest：Build a new chest,this chest must belong to the right group.Chests that aren't shared with it are in wrong group.
+b)拆除另一组的一个箱子
+Dismantle one chest that belongs to the wrong group.
+(content should drop at this time,you won't lose items.)
+c)新建一个箱子
+Build a new chest.
+
+5.7.打开箱子时略有卡顿属于正常现象，这是箱子大造成的，无法避免；其它情况卡顿属于bug
+Slightly stuttering when opening a chest is normal.It's because the chest have many slots.This can't be avoid.
+Other stuttering is bug.
+
+
 6.共享箱子因攻击/起火被破坏时，内容物掉落，并且所有共享箱子失效！
-但是不要惊慌，只要小退(返回标题)再进入游戏后建造任意箱子就可以恢复(恢复后箱子为空，因为内容物之前已经掉地上了)
+但是不要惊慌，建造任意箱子就可以恢复(恢复后箱子为空，因为内容物之前已经掉地上了)
 极少数情况下拆除箱子也会造成如同破坏箱子的效果，使用同样方法即可恢复
 When any shared chest is destroyed by attack/corruption,all the content DROPS and all shared chests is BROKEN.
-Don't be panic.Return to title,start the game again and build a new chest,then all shared chests will RECOVER.
+Don't be panic.Build a new chest,then all shared chests will RECOVER.
 (Recovered chests will be empty,because the content dropped on the ground earlier)
 In rare cases,when a chest is dismantled ,it will act like destroyed.You can use the above method to recover.
 
 7.共享箱中的食物腐败速度降低(严格来讲是腐败更快但是腐败条也变长，总体而言更难腐败了)
 Food in shared chest can hardly corrupt.
 (Every shared chest speed up the corruption,but the total corrupt time is 1000 times longer.)
+
 
 8.默认不影响饲料箱和配种农场; 影响冰箱
 In default condition,Feed box and breeding farm won't be shared.
