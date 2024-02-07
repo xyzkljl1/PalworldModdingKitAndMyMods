@@ -19,9 +19,10 @@ local hooked=false
 RegisterHook("/Script/Engine.PlayerController:ClientRestart", function(Context)
     if not hooked then
         RegisterHook("/Game/Mods/ShareChest/ModActor.ModActor_C:ReceiveBeginPlay",function()
-            ExecuteWithDelay(5000,function()
+            ExecuteWithDelay(6000,function()
                 ExecuteInGameThread(function()
                     FindMyMod()
+                    MyMod:DebugEvent()
                     Init()
                 end)
             end)
