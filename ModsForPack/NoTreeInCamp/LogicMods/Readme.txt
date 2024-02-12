@@ -1,4 +1,4 @@
-Mod version 1.2, for Game version v0.1.4.0
+Mod version 1.3, for Game version v0.1.4.0
 Remove all trees near base camp. 移除基地附近所有树木。
 
 
@@ -8,8 +8,9 @@ Remove all trees near base camp. 移除基地附近所有树木。
 This Mod changes your save file Permanently!
 Trees won't be back after uninstalling.
 
-1.5.基地范围是3500，该mod会移除4500范围内的树
+1.5.基地范围是3500，该mod会移除4500范围内的树，可以在NoTreeInCamp.modconfig.json中修改范围或使用Mod Config Menu修改
 Base camp range is 3500.This mod removes trees in 4500 distance.
+Range could be modified in `NoTreeInCamp.modconfig.json` or Mod Config Menu.
 
 2.每次进入游戏时触发,新建立的基地需要回到标题再进入才会触发
 Triggered when start a game.
