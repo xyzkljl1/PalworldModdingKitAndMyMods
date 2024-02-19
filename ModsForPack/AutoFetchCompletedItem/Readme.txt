@@ -1,5 +1,5 @@
 只在单机游戏中有效！/Only work in offline Game!
-Mod version 1.2, for Game version v0.1.4.0
+Mod version 1.3, for Game version v0.1.4.0
 道具制作完成后自动进入背包/transport crafted items to your bag automatically
 
 注意/Note：

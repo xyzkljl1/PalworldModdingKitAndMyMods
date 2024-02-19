@@ -49,8 +49,9 @@ RegisterHook("/Script/Engine.PlayerController:ClientRestart", function(Context)
                     end
                     --find empty slot
                     local out={}
-                    PalPlayerState:GetInventoryData():TryGetContainerFromInventoryType(0,out)
-                    -- There is a game bug,if requestMoveItemToInventory when bag is full, the item will stuck until restart.So need to check empry slot first.
+                    
+                    PalUtility:GetLocalInventoryData(PlayerController):TryGetContainerFromInventoryType(0,out)
+                    -- There is a game bug,if requestMoveItemToInventory when bag is full, the item will stuck until restart.So need to check empty slot first.
                     local emptySlot=false
                     local num=out.OutContainer:Num()
                     --this for-block is fucking slow!
