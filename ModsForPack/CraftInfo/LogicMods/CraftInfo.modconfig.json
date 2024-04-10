@@ -1,0 +1,20 @@
+{
+  "TriggerKey": {
+    "type": "string",
+    "desc": "triggerKey",
+    "init": "F2",
+    "live": "F2"
+  },
+  "TriggerKeyGamePad1": {
+    "type": "string",
+    "desc": "注意中文玩家应当使用中文设置，如：游戏手柄正面按钮下",
+    "init": "Gamepad Face Button Bottom",
+    "live": "Gamepad Face Button Bottom"
+  },
+  "TriggerKeyGamePad2": {
+    "type": "string",
+    "desc": "注意中文玩家应当使用中文设置，如：游戏手柄方向键左",
+    "init": "Gamepad D-pad Left",
+    "live": "Gamepad D-pad Left"
+  }
+}
