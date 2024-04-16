@@ -1,5 +1,6 @@
 local bShareFoodBox = false
 local OnlyMergeCertainChest=0
+local ignoreCoolerBox = true
 
 
 --DO NOT MODIFY Following variables unless you know enought about them
@@ -19,10 +20,9 @@ local hooked=false
 RegisterHook("/Script/Engine.PlayerController:ClientRestart", function(Context)
     if not hooked then
         RegisterHook("/Game/Mods/ShareChest/ModActor.ModActor_C:ReceiveBeginPlay",function()
-            ExecuteWithDelay(6000,function()
+            ExecuteWithDelay(5000,function()
                 ExecuteInGameThread(function()
                     FindMyMod()
-                    MyMod:DebugEvent()
                     Init()
                 end)
             end)
@@ -55,8 +55,10 @@ function Init()
     mySpecialContainer=nil
     mySpecialContainerFood=nil
     print("[ShareChest]Start Init")
-    MyMod:InitPara(mySpecialNumber,mySpecialNumberFood,mySpecialNumberFix,bShareFoodBox,OnlyMergeCertainChest)
+    MyMod:InitPara(mySpecialNumber,mySpecialNumberFood,mySpecialNumberFix,bShareFoodBox,OnlyMergeCertainChest,ignoreCoolerBox)
     MyMod:InitSpecialContainer(true)
+    --clear coolerbox
+    MyMod:RemoveSpecialContainerFromAllChests()
     --种种原因(如箱子被攻击破坏导致Container销毁)使得一些箱子的Container为空，在启动时自动修复
     MyMod:RecoverSpecialContainerToAllChests()
     --自动合并空箱
