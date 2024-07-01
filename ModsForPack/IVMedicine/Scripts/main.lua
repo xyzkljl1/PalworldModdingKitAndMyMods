@@ -2,19 +2,19 @@ local MyMod=nil
 local hooked=false
 RegisterHook("/Script/Engine.PlayerController:ClientRestart", function(Context)
     if not hooked then
-        RegisterHook("/Script/Pal.PalNetworkIndividualComponent:EatItem_ToServer",function(self,ID,itemData)
-            item=itemData:get()["ID"]:ToString()
-            if item=="Cake" then
+        RegisterHook("Function /Script/Pal.PalNetworkIndividualComponent:UseItemInSlotToCharacter_ToServer",function(self,ID,SlotAndNum)            
+                SlotID=SlotAndNum:get()["SlotID"]
+                ContainerID=SlotID["ContainerId"]["ID"]
                 FindMyMod()
                 x=ID:get()["InstanceId"]
                 y=ID:get()["PlayerUId"]
-                MyMod:AddIV(x["A"],x["B"],x["C"],x["D"],y["A"],y["B"],y["C"],y["D"],2)
-                --MyMod:AddIV(1,2,3,4,5,6,7,8,2)
-            end
+                MyMod:AddIV(x["A"],x["B"],x["C"],x["D"],y["A"],y["B"],y["C"],y["D"],2,
+                            ContainerID["A"],ContainerID["B"],ContainerID["C"],ContainerID["D"],SlotID["SlotIndex"],"Cake")
         end)
         hooked=true
     end
 end)
+
 
 function FindMyMod()    
     local modActors = FindAllOf("ModActor_C");
