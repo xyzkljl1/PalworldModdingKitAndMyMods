@@ -27,6 +27,16 @@ RegisterHook("/Script/Engine.PlayerController:ClientRestart", function(Context)
                 end)
             end)
         end)
+
+   		local PalStaticItemDataBases = FindAllOf("PalStaticItemDataBase")
+		if PalStaticItemDataBases then
+			for _, PalStaticItemDataBase in ipairs(PalStaticItemDataBases) do
+				if PalStaticItemDataBase.CorruptionFactor ~= nil then
+					PalStaticItemDataBase.CorruptionFactor = 0.0
+				end
+			end
+		end
+
         --在某些用户的机器上，ClientRestart会在启动游戏时就触发一次，而此时ReceiveBeginPlay的hook会失败，原因不明
         --因此需要把hooked=true放在后面，这样如果RegisterHooke失败了hooked就不会被赋值
         hooked=true
@@ -74,3 +84,24 @@ function FindMyMod()
         end
     end
 end
+
+-- 修改食物保质期(旧版本pak里修改箱子的保质期因数的部分并没有去掉）
+-- Learned from No food decay by yakuzadeso
+NotifyOnNewObject("/Script/Pal.PalStaticItemDataBase", function(item)
+	item.CorruptionFactor = 0.0
+end)
+
+local ServerAcknowledgePossessionCalled = false
+RegisterHook("/Script/Engine.PlayerController:ServerAcknowledgePossession", function(Context)
+	if not ServerAcknowledgePossessionCalled then
+		local PalStaticItemDataBases = FindAllOf("PalStaticItemDataBase")
+		if PalStaticItemDataBases then
+			for _, PalStaticItemDataBase in ipairs(PalStaticItemDataBases) do
+				if PalStaticItemDataBase.CorruptionFactor ~= nil then
+					PalStaticItemDataBase.CorruptionFactor = 0.0
+				end
+			end
+		end
+    	ServerAcknowledgePossessionCalled = true
+	end
+end)
