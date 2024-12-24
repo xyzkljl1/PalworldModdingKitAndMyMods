@@ -2,7 +2,7 @@ local MyMod=nil
 local hooked=false
 RegisterHook("/Script/Engine.PlayerController:ClientRestart", function(Context)
     if not hooked then
-        RegisterHook("Function /Script/Pal.PalNetworkIndividualComponent:UseItemInSlotToCharacter_ToServer",function(self,ID,SlotAndNum)            
+        RegisterHook("Function /Script/Pal.PalPlayerController:RequestUseItemToCharacter_ToServer",function(self,SlotAndNum,ID)            
                 SlotID=SlotAndNum:get()["SlotID"]
                 ContainerID=SlotID["ContainerId"]["ID"]
                 FindMyMod()
