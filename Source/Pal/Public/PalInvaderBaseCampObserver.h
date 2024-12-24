@@ -5,6 +5,7 @@
 #include "PalInvaderBaseCampObserver.generated.h"
 
 class UPalBaseCampModel;
+class UPalIndividualCharacterHandle;
 
 UCLASS(Blueprintable)
 class PAL_API UPalInvaderBaseCampObserver : public UObject {
@@ -31,6 +32,9 @@ private:
     
     UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
     float PlayerInBaseCampTimer;
+    
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, meta=(AllowPrivateAccess=true))
+    TArray<UPalIndividualCharacterHandle*> PlayerHandlesCache;
     
 public:
     UPalInvaderBaseCampObserver();

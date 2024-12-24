@@ -9,13 +9,16 @@ void UPalUIUtility::SetVisibilityHUD(const UObject* WorldContextObject, bool IsV
 void UPalUIUtility::SetNumberToSeparatedTextBlock(const UObject* WorldContextObject, const TArray<int32>& numberArray, TArray<UPalTextBlockBase*>& textBlockArray, float topZeroTextOpacity) {
 }
 
-void UPalUIUtility::SetEnableCommonUIInput(const UObject* WorldContextObject, bool isEnable) {
+void UPalUIUtility::SetEnableCommonUIInput(const UObject* WorldContextObject, const FName flagName, bool IsEnable) {
 }
 
 void UPalUIUtility::SetCustomSlateNavigation(const UObject* WorldContextObject, const FPalSlateNavigationSetting& NavigationSetting) {
 }
 
 void UPalUIUtility::ResetSlateNavigation(const UObject* WorldContextObject) {
+}
+
+void UPalUIUtility::ResetEnableCommonUIInput(const UObject* WorldContextObject) {
 }
 
 bool UPalUIUtility::IsToggleInteract(const UObject* WorldContextObject) {

@@ -2,6 +2,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "EPalBossBattleCombatResult.h"
+#include "EPalBossBattleDifficulty.h"
 #include "EPalBossBattleSequenceType.h"
 #include "EPalBossType.h"
 #include "PalStageInstanceId.h"
@@ -19,19 +20,19 @@ public:
     void UnlockAchievement_ToClient(EPalBossType BossType);
     
     UFUNCTION(BlueprintCallable, Reliable, Server)
-    void RequestBossBattleStart_ToServer(EPalBossType BossType, APalPlayerCharacter* StartPlayer);
+    void RequestBossBattleStart_ToServer(EPalBossType BossType);
     
     UFUNCTION(BlueprintCallable, Client, Reliable)
     void RequestBossBattleStart_ToClient(bool IsSuccess, EPalBossType BossType, const FPalStageInstanceId StageInstanceId, const TArray<APalPlayerCharacter*>& JoinPlayers);
     
     UFUNCTION(BlueprintCallable, Reliable, Server)
-    void RequestBossBattleEntry_ToServer(EPalBossType BossType, APalPlayerCharacter* EntryPlayer);
+    void RequestBossBattleEntry_ToServer(EPalBossType BossType, EPalBossBattleDifficulty Difficulty);
     
     UFUNCTION(BlueprintCallable, Client, Reliable)
     void RemovePlayerFromRoom_ToClient(EPalBossType BossType, APalPlayerCharacter* DeadPlayer);
     
     UFUNCTION(BlueprintCallable, Reliable, Server)
-    void NoticeSequenceEnd_ToServer(EPalBossType BossType, APalPlayerCharacter* Player);
+    void NoticeSequenceEnd_ToServer(EPalBossType BossType);
     
     UFUNCTION(BlueprintCallable, Client, Reliable)
     void CombatResult_ToClient(EPalBossType BossType, EPalBossBattleCombatResult CombatResult);

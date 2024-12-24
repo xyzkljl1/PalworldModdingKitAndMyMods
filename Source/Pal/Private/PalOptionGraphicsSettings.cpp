@@ -19,10 +19,12 @@ FPalOptionGraphicsSettings::FPalOptionGraphicsSettings() {
     this->ViewDistanceQuality = 0;
     this->FoliageQuality = 0;
     this->ShadowQuality = 0;
+    this->MapObjectDrawDistanceType = EPalOptionMapObjectDrawDistanceType::Invalid;
     this->Brightness = 0.00f;
     this->bEnableAutoContrast = false;
     this->TextureQuality = 0;
     this->DLSSMode = UDLSSMode::Off;
     this->MaxFPS = 0.00f;
+    this->ScreenPercentage = 0;
 }
 

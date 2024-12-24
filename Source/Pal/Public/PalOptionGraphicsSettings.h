@@ -5,6 +5,7 @@
 #include "SceneUtils.h"
 #include "GameFramework/GameUserSettings.h"
 #include "EPalOptionGraphicsLevel.h"
+#include "EPalOptionMapObjectDrawDistanceType.h"
 #include "PalOptionGraphicsSettings.generated.h"
 
 USTRUCT(BlueprintType)
@@ -69,6 +70,9 @@ public:
     int32 ShadowQuality;
     
     UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
+    EPalOptionMapObjectDrawDistanceType MapObjectDrawDistanceType;
+    
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
     float Brightness;
     
     UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
@@ -82,6 +86,9 @@ public:
     
     UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
     float MaxFPS;
+    
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
+    int32 ScreenPercentage;
     
     PAL_API FPalOptionGraphicsSettings();
 };

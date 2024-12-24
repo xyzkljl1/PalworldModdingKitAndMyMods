@@ -6,11 +6,12 @@
 #include "EPalDamageAnimationReactionType.h"
 #include "EPalDeadType.h"
 #include "EPalWazaID.h"
-#include "PalDamageInfo.h"
 #include "PalDamageRactionInfo.h"
 #include "PalDamageResult.h"
 #include "PalDeadInfo.h"
+#include "PalDyingEndInfo.h"
 #include "PalEachDamageRactionInfo.h"
+#include "PalInstanceID.h"
 #include "Templates/SubclassOf.h"
 #include "PalDamageReactionComponent.generated.h"
 
@@ -28,7 +29,7 @@ public:
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnNooseTrapDelegate, AActor*, TrapActor, FVector, FixLocation);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMentalDamageDelegate, FPalDamageResult, DamageResult);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEachDamageReactionDelegate, FPalEachDamageRactionInfo, EachReactionInfo);
-    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDyingDeadEnd, APalPlayerCharacter*, PlayerCharacter);
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnDyingDeadEnd, APalPlayerCharacter*, PlayerCharacter, const FPalDyingEndInfo&, DyingEndInfo);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeadDelegate, FPalDeadInfo, DeadInfo);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamageReactionDelegate, FPalDamageRactionInfo, ReactionInfo);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamageDelegate, FPalDamageResult, DamageResult);
@@ -83,6 +84,9 @@ private:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, meta=(AllowPrivateAccess=true))
     bool DisableLargeDown;
     
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, meta=(AllowPrivateAccess=true))
+    FPalInstanceID LastAttackerInstanceID;
+    
 public:
     UPalDamageReactionComponent(const FObjectInitializer& ObjectInitializer);
 
@@ -101,12 +105,6 @@ public:
     void SetDisableLargeDown();
     
 private:
-    UFUNCTION(BlueprintCallable, Reliable, Server)
-    void ProcessDeath_ToServer();
-    
-    UFUNCTION(BlueprintCallable, Reliable, Server)
-    void ProcessDamage_ToServer(const FPalDamageInfo& Info);
-    
     UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
     void PopupDamageBySlipDamage_ToALL(int32 Damage);
     
@@ -133,6 +131,9 @@ private:
 public:
     UFUNCTION(BlueprintCallable, BlueprintPure)
     bool IsIgnoreElementStatus(EPalAdditionalEffectType Effect);
+    
+    UFUNCTION(BlueprintCallable, BlueprintPure)
+    FPalInstanceID GetLastAttackerInstanceID();
     
 private:
     UFUNCTION(BlueprintCallable)

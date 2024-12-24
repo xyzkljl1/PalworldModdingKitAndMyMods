@@ -3,6 +3,7 @@
 #include "Engine/DataTable.h"
 #include "EPalOptionWorldDeathPenalty.h"
 #include "EPalOptionWorldDifficulty.h"
+#include "EPalRandomizerType.h"
 #include "PalOptionWorldPresetRow.generated.h"
 
 USTRUCT(BlueprintType)
@@ -11,6 +12,9 @@ struct FPalOptionWorldPresetRow : public FTableRowBase {
 public:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
     EPalOptionWorldDifficulty Diffculty;
+    
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
+    EPalRandomizerType RandomizerType;
     
     UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
     float DayTimeSpeedRate;
@@ -110,6 +114,9 @@ public:
     
     UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
     int32 BaseCampWorkerMaxNum;
+    
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
+    int32 SupplyDropSpan;
     
     PAL_API FPalOptionWorldPresetRow();
 };

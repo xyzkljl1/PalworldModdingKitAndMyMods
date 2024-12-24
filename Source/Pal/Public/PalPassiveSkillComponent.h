@@ -3,6 +3,7 @@
 #include "Components/ActorComponent.h"
 #include "EPalPassiveSkillEffectType.h"
 #include "EPalStatusID.h"
+#include "FlagContainer.h"
 #include "PalDamageInfo.h"
 #include "PalPassiveSkillEffectInfos.h"
 #include "PalSpecialAttackRateInfo.h"
@@ -17,6 +18,7 @@ public:
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnStartSkillEffect, EPalPassiveSkillEffectType, EffectType, float, Value);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEndSkillEffect, EPalPassiveSkillEffectType, EffectType);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnChangeSkillEffectValue, EPalPassiveSkillEffectType, EffectType, float, Value);
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnChangeDisablePassiveSkill, bool, isDisable, bool, IsAllReset);
     
     UPROPERTY(BlueprintAssignable, BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
     FOnStartSkillEffect OnStartSkillEffectDelegate;
@@ -34,16 +36,30 @@ private:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, meta=(AllowPrivateAccess=true))
     TArray<FPalPassiveSkillEffectInfos> SkillInfosMirror;
     
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, meta=(AllowPrivateAccess=true))
+    FFlagContainer PassiveDisableFlag;
+    
 public:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
     TMap<EPalPassiveSkillEffectType, EPalStatusID> SkillStatusMap;
     
+    UPROPERTY(BlueprintAssignable, BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
+    FOnChangeDisablePassiveSkill OnChangeDisablePassiveSkill;
+    
+private:
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
+    TArray<EPalPassiveSkillEffectType> DisablePassiveTypes;
+    
+public:
     UPalPassiveSkillComponent(const FObjectInitializer& ObjectInitializer);
 
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
     UFUNCTION(BlueprintCallable)
     void SetupSkillFromSelf(UObject* OwnerObject, const TArray<FName>& skillList);
+    
+    UFUNCTION(BlueprintCallable)
+    void SetDisablePassiveSkill(FName flagName, bool isDisable);
     
     UFUNCTION(BlueprintCallable)
     void OverrideDamageInfoBySkill(FPalDamageInfo& inoutDamageInfo);
@@ -63,7 +79,10 @@ private:
     
 public:
     UFUNCTION(BlueprintCallable, BlueprintPure)
-    float GetParameterWithPassiveSkillEffect(float originalValue, EPalPassiveSkillEffectType EffectType);
+    bool IsDisablePassiveSkill() const;
+    
+    UFUNCTION(BlueprintCallable, BlueprintPure)
+    float GetParameterWithPassiveSkillEffect(float originalValue, EPalPassiveSkillEffectType EffectType, bool containEquip);
     
     UFUNCTION(BlueprintCallable)
     void AddSpecialAttackRateInfo(TArray<FPalSpecialAttackRateInfo>& SpecialAttackRateInfos);

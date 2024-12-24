@@ -6,6 +6,7 @@ UPalBaseCampWorkerDirector::UPalBaseCampWorkerDirector() {
     this->CurrentOrderType = EPalMapBaseCampWorkerOrderType::Work;
     this->CurrentBattleType = EPalBaseCampWorkerDirectionBattleType::FirstValue;
     this->SlotObserverForServer = NULL;
+    this->BattleDirector = NULL;
     this->WorkerEventTickCount = 0;
     this->State = EPalBaseCampWorkerDirectorState::Init;
 }
@@ -41,9 +42,6 @@ void UPalBaseCampWorkerDirector::OnDeadWorkerInServer_Internal(APalCharacter* De
 }
 
 void UPalBaseCampWorkerDirector::OnDeadWorkerInServer(const FPalDeadInfo Info) {
-}
-
-void UPalBaseCampWorkerDirector::OnChangeWorldSettings_ServerInternal(const FPalOptionWorldSettings& PrevSettings, const FPalOptionWorldSettings& NewSettings) {
 }
 
 void UPalBaseCampWorkerDirector::OnAddedNewCharacterInServer(const FPalInstanceID& IndividualId) {

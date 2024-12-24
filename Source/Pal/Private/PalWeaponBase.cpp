@@ -16,6 +16,7 @@ APalWeaponBase::APalWeaponBase(const FObjectInitializer& ObjectInitializer) : Su
     this->weaponBulletDamageReactionType = EPalDamageAnimationReactionType::Big;
     this->IsEmptyOtomoPal = false;
     this->CoolDownTime = 0.00f;
+    this->IsTriggerOnlyFireWeapon = false;
     this->ShootBlurMaterialDynamic = NULL;
     this->ownWeaponStaticData = NULL;
     this->ownWeaponDynamicData = NULL;
@@ -38,7 +39,7 @@ UPalDynamicWeaponItemDataBase* APalWeaponBase::TryGetDynamicWeaponData() const {
     return NULL;
 }
 
-void APalWeaponBase::StartCoolDown() {
+void APalWeaponBase::StartCoolDown(float Rate) {
 }
 
 void APalWeaponBase::SetupWeaponSkill() {
@@ -98,6 +99,9 @@ void APalWeaponBase::OnEndAim_Implementation() {
 void APalWeaponBase::OnDetachWeapon_Implementation(AActor* detachActor) {
 }
 
+void APalWeaponBase::OnCreatedDynamicItemDataInClient(UPalDynamicItemDataBase* CreatedItemData) {
+}
+
 void APalWeaponBase::OnCreatedBullet_Implementation(APalBullet* Bullet) {
 }
 
@@ -136,6 +140,10 @@ bool APalWeaponBase::IsCoolDown() const {
 
 
 int32 APalWeaponBase::GetWeaponDamageFromDelegate_Implementation() const {
+    return 0;
+}
+
+int32 APalWeaponBase::GetWeaponDamage_forPlayerFlamethrower() const {
     return 0;
 }
 

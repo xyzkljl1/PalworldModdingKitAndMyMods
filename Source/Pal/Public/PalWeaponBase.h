@@ -29,6 +29,7 @@ class UCameraShakeBase;
 class UCurveFloat;
 class UMaterialInstanceDynamic;
 class UMaterialInterface;
+class UPalDynamicItemDataBase;
 class UPalDynamicWeaponItemDataBase;
 class UPalSoundSlot;
 class UPalStaticWeaponItemData;
@@ -48,10 +49,14 @@ public:
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangeCoolDownStateDelegate, bool, IsStart);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAttachWeaponDelegate);
     DECLARE_DYNAMIC_DELEGATE_RetVal(int32, FGetWeaponDamageDelegate);
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FForceUpdateBulletDelegate, int32, remainingBulletsNum);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCreatedBulletDelegate, APalBullet*, Bullet);
     
     UPROPERTY(BlueprintAssignable, BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
     FReloadBulletsDelegate OnReloadDelegate;
+    
+    UPROPERTY(BlueprintAssignable, BlueprintCallable, BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
+    FForceUpdateBulletDelegate OnForceUpdateBulletDelegate;
     
     UPROPERTY(BlueprintAssignable, BlueprintCallable, BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
     FUseBulletDelegate OnUseBulletDelegate;
@@ -140,6 +145,9 @@ public:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
     float CoolDownTime;
     
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
+    bool IsTriggerOnlyFireWeapon;
+    
 private:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
     UMaterialInstanceDynamic* ShootBlurMaterialDynamic;
@@ -191,6 +199,9 @@ private:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, meta=(AllowPrivateAccess=true))
     int32 LoadoutSelectorIndex;
     
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, meta=(AllowPrivateAccess=true))
+    TArray<UMaterialInterface*> OriginalMaterials;
+    
 public:
     APalWeaponBase(const FObjectInitializer& ObjectInitializer);
 
@@ -201,7 +212,7 @@ public:
     UPalDynamicWeaponItemDataBase* TryGetDynamicWeaponData() const;
     
     UFUNCTION(BlueprintCallable)
-    void StartCoolDown();
+    void StartCoolDown(float Rate);
     
     UFUNCTION(BlueprintCallable)
     void SetupWeaponSkill();
@@ -273,6 +284,11 @@ public:
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void OnDetachWeapon(AActor* detachActor);
     
+private:
+    UFUNCTION(BlueprintCallable)
+    void OnCreatedDynamicItemDataInClient(UPalDynamicItemDataBase* CreatedItemData);
+    
+public:
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void OnCreatedBullet(APalBullet* Bullet);
     
@@ -311,6 +327,9 @@ public:
     
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent, BlueprintPure)
     int32 GetWeaponDamageFromDelegate() const;
+    
+    UFUNCTION(BlueprintCallable, BlueprintPure)
+    int32 GetWeaponDamage_forPlayerFlamethrower() const;
     
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent, BlueprintPure)
     int32 GetWeaponDamage() const;

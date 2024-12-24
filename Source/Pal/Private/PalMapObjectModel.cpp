@@ -9,6 +9,7 @@ UPalMapObjectModel::UPalMapObjectModel() {
     this->Effect = NULL;
     this->bInDoor = false;
     this->InteractRestrictType = EPalMapObjectInteractRestrictType::Anyone;
+    this->SignificanceValue = 0.00f;
     this->DeteriorationDamage = 0.00f;
     this->DeteriorationTotalDamage = 0.00f;
     this->bIgnoredSave = false;
@@ -44,7 +45,7 @@ void UPalMapObjectModel::OnRep_BuildPlayerUId() {
 void UPalMapObjectModel::OnEndTriggerInteract(AActor* Other, EPalInteractiveObjectIndicatorType IndicatorType) {
 }
 
-void UPalMapObjectModel::OnAssignWorkRepairBuildObject(UPalWorkBase* Work, const FPalInstanceID& IndividualId) {
+void UPalMapObjectModel::OnAssignWorkRepairBuildObject(UPalWorkBase* Work, UPalWorkAssign* WorkAssign) {
 }
 
 bool UPalMapObjectModel::IsDamaged() const {
@@ -67,7 +68,7 @@ void UPalMapObjectModel::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
     DOREPLIFETIME(UPalMapObjectModel, BuildObjectId);
     DOREPLIFETIME(UPalMapObjectModel, BuildProcess);
     DOREPLIFETIME(UPalMapObjectModel, DamagableType);
-    DOREPLIFETIME(UPalMapObjectModel, HP);
+    DOREPLIFETIME(UPalMapObjectModel, Hp);
     DOREPLIFETIME(UPalMapObjectModel, InitialTransformCache);
     DOREPLIFETIME(UPalMapObjectModel, Connector);
     DOREPLIFETIME(UPalMapObjectModel, Effect);

@@ -44,13 +44,16 @@ public:
     static void SetNumberToSeparatedTextBlock(const UObject* WorldContextObject, const TArray<int32>& numberArray, UPARAM(Ref) TArray<UPalTextBlockBase*>& textBlockArray, float topZeroTextOpacity);
     
     UFUNCTION(BlueprintCallable, meta=(WorldContext="WorldContextObject"))
-    static void SetEnableCommonUIInput(const UObject* WorldContextObject, bool isEnable);
+    static void SetEnableCommonUIInput(const UObject* WorldContextObject, const FName flagName, bool IsEnable);
     
     UFUNCTION(BlueprintCallable, meta=(WorldContext="WorldContextObject"))
     static void SetCustomSlateNavigation(const UObject* WorldContextObject, const FPalSlateNavigationSetting& NavigationSetting);
     
     UFUNCTION(BlueprintCallable, meta=(WorldContext="WorldContextObject"))
     static void ResetSlateNavigation(const UObject* WorldContextObject);
+    
+    UFUNCTION(BlueprintCallable, meta=(WorldContext="WorldContextObject"))
+    static void ResetEnableCommonUIInput(const UObject* WorldContextObject);
     
     UFUNCTION(BlueprintCallable, BlueprintPure, meta=(WorldContext="WorldContextObject"))
     static bool IsToggleInteract(const UObject* WorldContextObject);

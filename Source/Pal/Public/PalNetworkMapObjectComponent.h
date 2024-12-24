@@ -2,7 +2,6 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "UObject/NoExportTypes.h"
-#include "UObject/NoExportTypes.h"
 #include "Components/ActorComponent.h"
 #include "EPalMapObjectConcreteModelModuleType.h"
 #include "EPalMapObjectOperationResult.h"
@@ -11,6 +10,7 @@
 #include "PalFoliageInstanceId.h"
 #include "PalNetArchive.h"
 #include "PalNetworkMapObjectSpawnRequestParameter.h"
+#include "PalNetworkMapObjectTickIntervalInBackgroundInfo.h"
 #include "PalNetworkMapObjectComponent.generated.h"
 
 class APalMapObjectSpawnerBase;
@@ -32,9 +32,6 @@ public:
     UPalNetworkMapObjectComponent(const FObjectInitializer& ObjectInitializer);
 
 private:
-    UFUNCTION(BlueprintCallable, Reliable, Server)
-    void RequestSpawnMapObject_ToServer(const FGuid& RequestID, const FName MapObjectId, const FVector& Location, const FQuat& Rotation, const TArray<FPalNetArchive>& ExtraParameterArchives);
-    
     UFUNCTION(BlueprintCallable, Reliable, Server)
     void RequestRepair_ToServer(const FGuid& InstanceId);
     
@@ -211,6 +208,12 @@ private:
     
     UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
     void NotifyConcreteModel_Multicast_bool(const FGuid& ConcreteModelInstanceId, const FName FunctionName, bool Value);
+    
+    UFUNCTION(BlueprintCallable, Client, Reliable)
+    void Dev_ReceiveMapObjectsTickIntervalInBackground_ToClient(const TArray<FPalNetworkMapObjectTickIntervalInBackgroundInfo>& TickIntervalInfoArray);
+    
+    UFUNCTION(BlueprintCallable, Reliable, Server)
+    void Dev_FetchMapObjectsTickIntervalInBackground_ToServer();
     
 };
 

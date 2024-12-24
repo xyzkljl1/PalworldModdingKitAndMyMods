@@ -9,3 +9,4 @@ UPalInvaderBaseCampObserver::UPalInvaderBaseCampObserver() {
     this->PlayerInBaseCampTimer = 0.00f;
 }
 
+

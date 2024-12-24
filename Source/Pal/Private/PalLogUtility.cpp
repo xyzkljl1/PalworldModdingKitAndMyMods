@@ -64,7 +64,10 @@ void UPalLogUtility::AddItemGetLog(const UObject* WorldContextObject, const FPal
 void UPalLogUtility::AddDropPalLog(const UObject* WorldContextObject, const FPalLogInfo_DropPal& LogInfo) {
 }
 
-void UPalLogUtility::AddDeathLog(const UObject* WorldContextObject, const UPalIndividualCharacterHandle* CharacterHandle) {
+void UPalLogUtility::AddDeathLog(const UObject* WorldContextObject, const FPalKillLogDisplayData& DeathLogDisplayData) {
+}
+
+void UPalLogUtility::AddBaseCampWorkerMovementLog(const UObject* WorldContextObject, const FPalBaseCampWorkerMovementLogDisplayData& DisplayData) {
 }
 
 

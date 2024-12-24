@@ -6,5 +6,9 @@ FPalOptionCommonSettings::FPalOptionCommonSettings() {
     this->bEnableMotionBlur = false;
     this->bEnableCameraShake = false;
     this->Brightness = 0.00f;
+    this->bDisableAutoPickupItemInOverflowWeight = false;
+    this->bDisableGuildJoinRequest = false;
+    this->ScreenPercentage = 0;
+    this->MapObjectDrawDistanceType = EPalOptionMapObjectDrawDistanceType::Invalid;
 }
 

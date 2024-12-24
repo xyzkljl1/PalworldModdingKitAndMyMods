@@ -6,7 +6,6 @@
 #include "Engine/EngineTypes.h"
 #include "EPalCharacterCompleteDelegatePriority.h"
 #include "EPalCharacterImportanceType.h"
-#include "FixedPoint.h"
 #include "FlagContainer.h"
 #include "PalOnCharacterCompleteInitializeParameterDelegate.h"
 #include "PalCharacter.generated.h"
@@ -23,6 +22,7 @@ class UPalCharacterMovementComponent;
 class UPalCharacterOnCompleteInitializeParameterWrapper;
 class UPalCharacterParameterComponent;
 class UPalDamageReactionComponent;
+class UPalFlyMeshHeightCtrlComponent;
 class UPalFootIKComponent;
 class UPalHeadUpDisplayComponent;
 class UPalLookAtComponent;
@@ -35,6 +35,7 @@ class UPalStatusComponent;
 class UPalVisualEffectComponent;
 class USceneComponent;
 class USkeletalMeshComponent;
+class USphereComponent;
 
 UCLASS(Blueprintable)
 class APalCharacter : public ACharacter {
@@ -44,6 +45,7 @@ public:
     DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCompleteSyncPlayerFromServer_InClient);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCompleteInitializeParameter, APalCharacter*, InCharacter);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangeImportance, EPalCharacterImportanceType, NextType);
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnChangeBattleModeCharacter, APalCharacter*, SelfCharacter, bool, bIsBattleMode);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangeBattleMode, bool, bIsBattleMode);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangeActiveActor, bool, bIsActive);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCaptured, APalCharacter*, SelfCharacter, APalCharacter*, Attacker);
@@ -96,6 +98,9 @@ public:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Instanced, meta=(AllowPrivateAccess=true))
     UPalCharacterAroundInfoCollectorComponent* AroundInfoCollectorComponent;
     
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Instanced, meta=(AllowPrivateAccess=true))
+    USphereComponent* RagdollInteractiveSphere;
+    
     UPROPERTY(BlueprintAssignable, BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
     FOnChangeActiveActor OnChangeActiveActorDelegate;
     
@@ -112,6 +117,9 @@ public:
     FOnChangeBattleMode OnChangeBattleModeDelegate;
     
     UPROPERTY(BlueprintAssignable, BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
+    FOnChangeBattleModeCharacter OnChangeBattleModeCharacterDelegate;
+    
+    UPROPERTY(BlueprintAssignable, BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
     FOnChangeImportance OnChangeImportanceDelegate;
     
     UPROPERTY(BlueprintAssignable, BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
@@ -123,6 +131,9 @@ protected:
     
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, meta=(AllowPrivateAccess=true))
     bool bIsTalkMode;
+    
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Instanced, Transient, meta=(AllowPrivateAccess=true))
+    UPalFlyMeshHeightCtrlComponent* FlyMeshHeightCtrlComponent;
     
 private:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, ReplicatedUsing=OnRep_IsPalActiveActor, meta=(AllowPrivateAccess=true))
@@ -180,12 +191,6 @@ public:
     
     UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
     void RPCDummy();
-    
-    UFUNCTION(BlueprintCallable, Reliable, Server)
-    void ReviveCharacter_ToServer(FFixedPoint HP);
-    
-    UFUNCTION(BlueprintCallable)
-    void ReviveCharacter(FFixedPoint HP);
     
     UFUNCTION(BlueprintCallable)
     void ResetTickInterval();

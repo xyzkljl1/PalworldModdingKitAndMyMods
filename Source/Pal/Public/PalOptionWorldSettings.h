@@ -4,6 +4,7 @@
 #include "EPalLogFormatType.h"
 #include "EPalOptionWorldDeathPenalty.h"
 #include "EPalOptionWorldDifficulty.h"
+#include "EPalRandomizerType.h"
 #include "PalOptionWorldSettings.generated.h"
 
 USTRUCT(BlueprintType)
@@ -12,6 +13,12 @@ struct FPalOptionWorldSettings {
 public:
     UPROPERTY(BlueprintReadWrite, Config, EditAnywhere, meta=(AllowPrivateAccess=true))
     EPalOptionWorldDifficulty Difficulty;
+    
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, meta=(AllowPrivateAccess=true))
+    EPalRandomizerType RandomizerType;
+    
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, meta=(AllowPrivateAccess=true))
+    FString RandomizerSeed;
     
     UPROPERTY(BlueprintReadWrite, Config, EditAnywhere, meta=(AllowPrivateAccess=true))
     float DayTimeSpeedRate;
@@ -128,10 +135,16 @@ public:
     int32 GuildPlayerMaxNum;
     
     UPROPERTY(BlueprintReadWrite, Config, EditAnywhere, meta=(AllowPrivateAccess=true))
+    int32 BaseCampMaxNumInGuild;
+    
+    UPROPERTY(BlueprintReadWrite, Config, EditAnywhere, meta=(AllowPrivateAccess=true))
     float PalEggDefaultHatchingTime;
     
     UPROPERTY(BlueprintReadWrite, Config, EditAnywhere, meta=(AllowPrivateAccess=true))
     float WorkSpeedRate;
+    
+    UPROPERTY(BlueprintReadWrite, Config, EditAnywhere, meta=(AllowPrivateAccess=true))
+    float autoSaveSpan;
     
     UPROPERTY(BlueprintReadWrite, Config, EditAnywhere, meta=(AllowPrivateAccess=true))
     bool bIsMultiplay;
@@ -156,6 +169,9 @@ public:
     
     UPROPERTY(BlueprintReadWrite, Config, EditAnywhere, meta=(AllowPrivateAccess=true))
     bool bEnableDefenseOtherGuildPlayer;
+    
+    UPROPERTY(BlueprintReadWrite, Config, EditAnywhere, meta=(AllowPrivateAccess=true))
+    bool bInvisibleOtherGuildBaseCampAreaFX;
     
     UPROPERTY(BlueprintReadWrite, Config, EditAnywhere, meta=(AllowPrivateAccess=true))
     int32 CoopPlayerMaxNum;
@@ -206,6 +222,9 @@ public:
     bool bShowPlayerList;
     
     UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
+    int32 ChatPostLimitPerMinute;
+    
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
     EPalAllowConnectPlatform AllowConnectPlatform;
     
     UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
@@ -213,6 +232,9 @@ public:
     
     UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
     EPalLogFormatType LogFormatType;
+    
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
+    int32 SupplyDropSpan;
     
     PAL_API FPalOptionWorldSettings();
 };

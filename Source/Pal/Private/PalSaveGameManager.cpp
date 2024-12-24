@@ -1,8 +1,11 @@
 #include "PalSaveGameManager.h"
 
 UPalSaveGameManager::UPalSaveGameManager() {
+    this->bIsLoadedWorldSaveData = false;
     this->LoadedWorldSaveData = NULL;
+    this->bIsLoadedLocalWorldSaveData = false;
     this->LoadedLocalWorldSaveData = NULL;
+    this->bIsLoadedWorldOptionSaveData = false;
     this->LoadedWorldOptionSaveData = NULL;
     this->IsAppliedPlayerSaveData = false;
     this->bIsForceDisableAutoSave = false;
@@ -11,6 +14,8 @@ UPalSaveGameManager::UPalSaveGameManager() {
     this->MinutesSaveBackupNum = 6;
     this->HourSaveBackupNum = 12;
     this->DaySaveBackupNum = 7;
+    this->GDKMaxBackupSlotNum = 3;
+    this->GDKBackupFrequency = 3;
 }
 
 void UPalSaveGameManager::StartWorldDataAutoSave() {

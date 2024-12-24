@@ -2,6 +2,7 @@
 
 FPalOptionWorldSettings::FPalOptionWorldSettings() {
     this->Difficulty = EPalOptionWorldDifficulty::None;
+    this->RandomizerType = EPalRandomizerType::None;
     this->DayTimeSpeedRate = 0.00f;
     this->NightTimeSpeedRate = 0.00f;
     this->ExpRate = 0.00f;
@@ -40,8 +41,10 @@ FPalOptionWorldSettings::FPalOptionWorldSettings() {
     this->bAutoResetGuildNoOnlinePlayers = false;
     this->AutoResetGuildTimeNoOnlinePlayers = 0.00f;
     this->GuildPlayerMaxNum = 0;
+    this->BaseCampMaxNumInGuild = 0;
     this->PalEggDefaultHatchingTime = 0.00f;
     this->WorkSpeedRate = 0.00f;
+    this->autoSaveSpan = 0.00f;
     this->bIsMultiplay = false;
     this->bIsPvP = false;
     this->bCanPickupOtherGuildDeathPenaltyDrop = false;
@@ -50,6 +53,7 @@ FPalOptionWorldSettings::FPalOptionWorldSettings() {
     this->bIsStartLocationSelectByMap = false;
     this->bExistPlayerAfterLogout = false;
     this->bEnableDefenseOtherGuildPlayer = false;
+    this->bInvisibleOtherGuildBaseCampAreaFX = false;
     this->CoopPlayerMaxNum = 0;
     this->ServerPlayerMaxNum = 0;
     this->PublicPort = 0;
@@ -59,8 +63,10 @@ FPalOptionWorldSettings::FPalOptionWorldSettings() {
     this->RESTAPIEnabled = false;
     this->RESTAPIPort = 0;
     this->bShowPlayerList = false;
+    this->ChatPostLimitPerMinute = 0;
     this->AllowConnectPlatform = EPalAllowConnectPlatform::Steam;
     this->bIsUseBackupSaveData = false;
     this->LogFormatType = EPalLogFormatType::Text;
+    this->SupplyDropSpan = 0;
 }
 

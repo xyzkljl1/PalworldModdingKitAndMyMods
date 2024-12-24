@@ -2,6 +2,7 @@
 
 FPalOptionWorldPresetRow::FPalOptionWorldPresetRow() {
     this->Diffculty = EPalOptionWorldDifficulty::None;
+    this->RandomizerType = EPalRandomizerType::None;
     this->DayTimeSpeedRate = 0.00f;
     this->NightTimeSpeedRate = 0.00f;
     this->ExpRate = 0.00f;
@@ -35,5 +36,6 @@ FPalOptionWorldPresetRow::FPalOptionWorldPresetRow() {
     this->GuildPlayerMaxNum = 0;
     this->PalEggDefaultHatchingTime = 0.00f;
     this->BaseCampWorkerMaxNum = 0;
+    this->SupplyDropSpan = 0;
 }
 

@@ -3,6 +3,7 @@
 #include "UObject/NoExportTypes.h"
 #include "UObject/Object.h"
 #include "EPalStatusID.h"
+#include "PalFastBaseCampMapObjectRepInfoArray.h"
 #include "PalMapObjectDisposeOptions.h"
 #include "PalBaseCampMapObjectCollection.generated.h"
 
@@ -34,7 +35,13 @@ public:
     
 private:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Replicated, Transient, meta=(AllowPrivateAccess=true))
-    TArray<FGuid> MapObjectInstanceIds;
+    FPalFastBaseCampMapObjectRepInfoArray MapObjectInstanceIdRepInfoArray;
+    
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, meta=(AllowPrivateAccess=true))
+    TArray<FGuid> DropItemConcreteModelInstanceIds;
+    
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, meta=(AllowPrivateAccess=true))
+    TArray<FGuid> DefenseAttackModelInstanceIds;
     
 public:
     UPalBaseCampMapObjectCollection();
@@ -50,7 +57,7 @@ protected:
     
 private:
     UFUNCTION(BlueprintCallable)
-    void OnNotAvailableConcreteModel(UPalMapObjectConcreteModelBase* Model);
+    void OnNotAvailableConcreteModel_ServerInternal(UPalMapObjectConcreteModelBase* Model);
     
 protected:
     UFUNCTION(BlueprintCallable)
@@ -61,7 +68,7 @@ private:
     void OnDisposeMapObject(UPalMapObjectModel* Model, const FPalMapObjectDisposeOptions& Options);
     
     UFUNCTION(BlueprintCallable)
-    void OnAvailableConcreteModel(UPalMapObjectConcreteModelBase* Model);
+    void OnAvailableConcreteModel_ServerInternal(UPalMapObjectConcreteModelBase* Model);
     
 };
 

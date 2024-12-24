@@ -23,9 +23,12 @@ UPalShooterComponent::UPalShooterComponent(const FObjectInitializer& ObjectIniti
     this->bBufferedInput = false;
     this->bIsShootingHold = false;
     this->bIsAttachRequest = false;
+    this->bChangeIsShootingPulling = false;
+    this->bChangeIsShootingRelaseRequest = false;
     this->NPCWeapon = NULL;
     this->CurrentBulletBlurRate = 0.00f;
     this->RapidFireBlur = 0.00f;
+    this->CurrentWeaponUseLeftHandIK = false;
 }
 
 void UPalShooterComponent::StopWeaponChangeAnimation() {
@@ -194,16 +197,20 @@ FVector UPalShooterComponent::GetTargetDirection() const {
     return FVector{};
 }
 
-FWeaponAnimationInfo UPalShooterComponent::GetPrevWeaponAnimationInfo() const {
-    return FWeaponAnimationInfo{};
+UWeaponAnimationInfoWrap* UPalShooterComponent::GetPrevWeaponAnimationInfo() const {
+    return NULL;
 }
 
 APalWeaponBase* UPalShooterComponent::GetHasWeapon() const {
     return NULL;
 }
 
-FWeaponAnimationInfo UPalShooterComponent::GetCurrentWeaponAnimationInfo() const {
-    return FWeaponAnimationInfo{};
+FTransform UPalShooterComponent::GetCurrentWeaponTransformLeftHandIK() const {
+    return FTransform{};
+}
+
+UWeaponAnimationInfoWrap* UPalShooterComponent::GetCurrentWeaponAnimationInfo() const {
+    return NULL;
 }
 
 FRidingAnimationInfo UPalShooterComponent::GetCurrentRidingAnimationInfo() const {
@@ -225,7 +232,7 @@ UPalShooterAnimeAssetBase* UPalShooterComponent::GetBowAnimAsset() {
 void UPalShooterComponent::EndAim() {
 }
 
-void UPalShooterComponent::ChangeWeapon(APalWeaponBase* weapon) {
+void UPalShooterComponent::ChangeWeapon(APalWeaponBase* Weapon) {
 }
 
 void UPalShooterComponent::ChangeIsShooting_ToServer_Implementation(int32 ID, bool NewIsShooting) {
@@ -250,7 +257,7 @@ bool UPalShooterComponent::CanWeaponChangeAnime() {
     return false;
 }
 
-bool UPalShooterComponent::CanUseWeapon(APalWeaponBase* weapon) const {
+bool UPalShooterComponent::CanUseWeapon(APalWeaponBase* Weapon) const {
     return false;
 }
 
@@ -293,13 +300,13 @@ bool UPalShooterComponent::CanAim() const {
 void UPalShooterComponent::BowPullAnimeEnd() {
 }
 
-void UPalShooterComponent::AttachWeapon_ForPartnerSkillPalWeapon_ToAll_Implementation(APalWeaponBase* weapon) {
+void UPalShooterComponent::AttachWeapon_ForPartnerSkillPalWeapon_ToAll_Implementation(APalWeaponBase* Weapon) {
 }
 
 void UPalShooterComponent::AttachWeapon_ForNPC_ToAll_Implementation(bool IsNotNull) {
 }
 
-void UPalShooterComponent::AttachWeapon(APalWeaponBase* weapon) {
+void UPalShooterComponent::AttachWeapon(APalWeaponBase* Weapon) {
 }
 
 void UPalShooterComponent::AddRapidFireBlur() {
